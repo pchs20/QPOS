@@ -1,8 +1,12 @@
 from rest_framework import serializers
 
-from django.shortcuts import get_object_or_404
+from .models import Proveidor, Producte
 
-from .models import Producte
+
+class ProveidorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Proveidor
+        fields = '__all__'
 
 
 class ProducteSerializer(serializers.ModelSerializer):

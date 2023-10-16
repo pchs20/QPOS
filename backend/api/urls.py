@@ -3,7 +3,8 @@ from django.urls import path, include
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'productes', views.ProductesView, basename='enquestes')
+router.register(r'proveidors', views.ProveidorsView, basename='proveidors')
+router.register(r'productes', views.ProductesView, basename='productes')
 
 urlpatterns = [
     path('', include(router.urls)),
