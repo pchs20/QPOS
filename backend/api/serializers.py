@@ -10,6 +10,15 @@ class ProveidorSerializer(serializers.ModelSerializer):
 
 
 class ProducteSerializer(serializers.ModelSerializer):
+    proveidor = ProveidorSerializer(read_only=True)
+    proveidor_id = serializers.PrimaryKeyRelatedField(
+        allow_null=False,
+        queryset=Proveidor.objects.all(),
+        write_only=True,
+        required=True,
+        source='proveidor'
+    )
+    
     class Meta:
         model = Producte
         fields = '__all__'
