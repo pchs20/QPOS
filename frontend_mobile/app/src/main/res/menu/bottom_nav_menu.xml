@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_productes"
+        android:icon="@drawable/icon_event"
+        android:title="Events" />
+
+    <item
+        android:id="@+id/navigation_cupons"
+        android:icon="@drawable/icon_discount"
+        android:title="Cupons" />
+
+    <item
+        android:id="@+id/navigation_factures"
+        android:icon="@drawable/icon_factura"
+        android:title="Factures" />
+    <item
+        android:id="@+id/navigation_compte"
+        android:icon="@drawable/icon_user"
+        android:title="Compte" />
+
+</menu>
