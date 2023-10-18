@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">DAM_Projecte_QPOS</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="spinner_options">
+        <item>Selecciona el Animal</item>
+        <item>Gat</item>
+        <item>Gos</item>
+        <item>Peix</item>
+        <item>Tortuga</item>
+        <item>Hamster</item>
+    </string-array>
+</resources>
