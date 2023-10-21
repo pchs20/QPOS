@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
 from .models import Proveidor, Producte, Client, Treballador, Admin
-from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer
+from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer, LoginUsuariChildrenSerializer
 
 
 class ProveidorsView(viewsets.ModelViewSet):
@@ -32,3 +32,9 @@ class AdminsView(viewsets.ModelViewSet):
     queryset = Admin.objects.all()
     serializer_class = UsuariChildrenSerializer
     models = Admin
+
+
+class LoginClientView(viewsets.ModelViewSet):
+    queryset = Client.objects.all()
+    serializer_class = LoginUsuariChildrenSerializer
+    models = Client
