@@ -55,9 +55,6 @@ def validacioLogin(data):
     except User.DoesNotExist:
         raise serializers.ValidationError("No existeix un usuari amb aquest username.")
 
-    if not user.is_active:
-        raise serializers.ValidationError("Aquest usuari ha estat banejat o es troba pendent de confirmació.")
-
     pwd_valid = check_password(password, user.password)
 
     if not pwd_valid:
@@ -81,6 +78,14 @@ class LoginUsuariChildrenSerializer(UsuariChildrenSerializer):
         model = Client
         fields = ('username', 'password', 'token')
 
+    def create(self, data):
+        user = self.context['user']
+        data = creacioLogin(data, user)
+        data['user'] = user
+        return data
+
+
+class LoginClientSerializer(LoginUsuariChildrenSerializer):
     def validate(self, data):
         user = validacioLogin(data)
         try:
@@ -91,8 +96,26 @@ class LoginUsuariChildrenSerializer(UsuariChildrenSerializer):
 
         return data
 
-    def create(self, data):
-        user = self.context['user']
-        data = creacioLogin(data, user)
-        data['user'] = user
+
+class LoginTreballadorSerializer(LoginUsuariChildrenSerializer):
+    def validate(self, data):
+        user = validacioLogin(data)
+        try:
+            _ = user.usuari.treballador
+        except:
+            raise serializers.ValidationError("No existeix un treballador amb aquest username.")
+        self.context['user'] = user
+
+        return data
+
+
+class LoginAdminSerializer(LoginUsuariChildrenSerializer):
+    def validate(self, data):
+        user = validacioLogin(data)
+        try:
+            _ = user.usuari.admin
+        except:
+            raise serializers.ValidationError("No existeix un admin amb aquest username.")
+        self.context['user'] = user
+
         return data
