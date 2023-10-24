@@ -8,6 +8,9 @@ router.register(r'productes', views.ProductesView, basename='productes')
 router.register(r'clients', views.ClientsView, basename='clients')
 router.register(r'treballadors', views.TreballadorsView, basename='treballadors')
 router.register(r'admins', views.AdminsView, basename='admins')
+router.register(r'login/clients', views.LoginClientView, 'log in clients')
+router.register(r'login/treballadors', views.LoginTreballadorView, 'log in treballadors')
+router.register(r'login/admins', views.LoginAdminView, 'log in admins')
 
 urlpatterns = [
     path('', include(router.urls)),
