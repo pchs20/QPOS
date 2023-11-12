@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
+from rest_framework.validators import UniqueValidator
+from django.contrib.auth.password_validation import validate_password
 from rest_framework.authtoken.models import Token
 
-from .models import Proveidor, Producte, Client, Treballador, Admin
+from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari
 
 
 class ProveidorSerializer(serializers.ModelSerializer):
@@ -45,7 +47,7 @@ class UsuariChildrenSerializer(serializers.ModelSerializer):
         fields = ('user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge')
 
 
-# LOGIN, SIGNUP
+# LOGIN
 def validacioLogin(data):
     username = data.get("username", None)
     password = data.get("password", None)
@@ -118,4 +120,125 @@ class LoginAdminSerializer(LoginUsuariChildrenSerializer):
             raise serializers.ValidationError("No existeix un admin amb aquest username.")
         self.context['user'] = user
 
+        return data
+
+
+# SIGN UP
+def validacioSignUp(data):
+    if data['password'] != data['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+    return data
+
+def validacioLogin(data):
+    username = data.get("username", None)
+    password = data.get("password", None)
+
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        raise serializers.ValidationError("No existeix un usuari amb aquest username.")
+
+    pwd_valid = check_password(password, user.password)
+
+    if not pwd_valid:
+        raise serializers.ValidationError("Contrasenya incorrecta.")
+    return user
+
+
+def creacioUsuari(data):
+    username = data.get("username", None)
+    email = data.get("email", None)
+    nom = data.get("nom", None)
+    cognoms = data.get("cognoms", None)
+
+    user = User.objects.create(
+            username=username,
+            email=email,
+            first_name=nom,
+            last_name=cognoms
+        )
+    user.is_active = True
+
+    user.set_password(data.get('password'))
+    user.save()
+
+    token, created = Token.objects.get_or_create(user=user)
+    data['token'] = token.key
+    data['created'] = created
+
+    dni = data.get("dni", None)
+    bio = data.get("bio", None)
+    dataNaixement = data.get("dataNaixement", None)
+    telefon = data.get("telefon", None)
+
+    usuari = Usuari.objects.create(
+        user=user,
+        dni=dni,
+        bio=bio,
+        dataNaixement=dataNaixement,
+        telefon=telefon,
+    )
+
+    return usuari, data
+
+
+class SignUpUsuariChildrenSerializer(UsuariChildrenSerializer):
+    email = serializers.EmailField(required=True)
+    username = serializers.CharField(max_length=255, required=True)
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    nom = serializers.CharField(required=True)
+    cognoms = serializers.CharField(required=True)
+    dni = serializers.CharField(required=True)
+    bio = serializers.CharField(required=False)
+    dataNaixement = serializers.DateField(required=False)
+    telefon = serializers.IntegerField(required=False)
+    token = serializers.CharField(required=False, read_only=True)
+    created = serializers.BooleanField(required=False, read_only=True)
+
+    class Meta:
+        model = Client
+        fields = ('email', 'username', 'password', 'password2', 'dni', 'dataNaixement',
+                  'telefon', 'token', 'created', 'nom', 'cognoms')
+
+    def validate(self, data):
+        return validacioSignUp(data)
+
+
+class SignUpClientSerializer(SignUpUsuariChildrenSerializer):
+    class Meta:
+        model = Client
+        fields = ('email', 'username', 'password', 'password2', 'dni', 'dataNaixement',
+                  'telefon', 'token', 'created', 'nom', 'cognoms')
+
+    def create(self, data):
+        usuari, data = creacioUsuari(data)
+        Client.objects.create(usuari=usuari)
+        data['usuari'] = usuari
+        return data
+
+
+class SignUpTreballadorSerializer(SignUpUsuariChildrenSerializer):
+    class Meta:
+        model = Treballador
+        fields = ('email', 'username', 'password', 'password2', 'dni', 'dataNaixement',
+                  'telefon', 'token', 'created', 'nom', 'cognoms')
+
+    def create(self, data):
+        usuari, data = creacioUsuari(data)
+        Treballador.objects.create(usuari=usuari)
+        data['usuari'] = usuari
+        return data
+
+
+class SignUpAdminSerializer(SignUpUsuariChildrenSerializer):
+    class Meta:
+        model = Admin
+        fields = ('email', 'username', 'password', 'password2', 'dni', 'dataNaixement',
+                  'telefon', 'token', 'created', 'nom', 'cognoms')
+
+    def create(self, data):
+        usuari, data = creacioUsuari(data)
+        Admin.objects.create(usuari=usuari)
+        data['usuari'] = usuari
         return data
