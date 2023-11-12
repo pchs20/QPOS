@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.authtoken.models import Token
 
-from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari, Compra
+from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari, Compra, LiniaCompra
 
 
 class ProveidorSerializer(serializers.ModelSerializer):
@@ -46,10 +46,27 @@ class UsuariChildrenSerializer(serializers.ModelSerializer):
         fields = ('user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge')
 
 
+class LiniaCompraSerializer(serializers.ModelSerializer):
+    producte = ProducteSerializer(read_only=True)
+    producte_id = serializers.PrimaryKeyRelatedField(
+        allow_null=False,
+        queryset=Producte.objects.all(),
+        write_only=True,
+        required=True,
+        source='producte'
+    )
+
+    class Meta:
+        model = LiniaCompra
+        fields = '__all__'
+
+
 class CompraSerializer(serializers.ModelSerializer):
+    liniesCompra = LiniaCompraSerializer(many=True, read_only=True)
+
     class Meta:
         model = Compra
-        fields = '__all__'
+        fields = ('id', 'data', 'importFinal', 'client', 'treballador', 'liniesCompra')
 
 
 # LOGIN
