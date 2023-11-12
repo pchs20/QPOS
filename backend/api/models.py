@@ -21,8 +21,6 @@ class Producte(models.Model):
 
 
 class Usuari(models.Model):
-    User.first_name
-    User.last_name
     # Del user farem servir:
     # 1. First name
     # 2. Last name
