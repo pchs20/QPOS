@@ -63,10 +63,26 @@ class LiniaCompraSerializer(serializers.ModelSerializer):
 
 class CompraSerializer(serializers.ModelSerializer):
     liniesCompra = LiniaCompraSerializer(many=True, read_only=True)
+    client = UsuariChildrenSerializer(read_only=True)
+    client_id = serializers.PrimaryKeyRelatedField(
+        allow_null=False,
+        queryset=Client.objects.all(),
+        write_only=True,
+        required=True,
+        source='client'
+    )
+    treballador = UsuariChildrenSerializer(read_only=True)
+    treballador_id = serializers.PrimaryKeyRelatedField(
+        allow_null=False,
+        queryset=Treballador.objects.all(),
+        write_only=True,
+        required=True,
+        source='treballador'
+    )
 
     class Meta:
         model = Compra
-        fields = ('id', 'data', 'importFinal', 'client', 'treballador', 'liniesCompra')
+        fields = ('id', 'data', 'importFinal', 'client', 'client_id', 'treballador', 'treballador_id', 'liniesCompra')
 
 
 # LOGIN
