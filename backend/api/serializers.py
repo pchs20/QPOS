@@ -1,11 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
-from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.authtoken.models import Token
 
-from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari
+from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari, Compra
 
 
 class ProveidorSerializer(serializers.ModelSerializer):
@@ -45,6 +44,12 @@ class UsuariChildrenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ('user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge')
+
+
+class CompraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Compra
+        fields = '__all__'
 
 
 # LOGIN

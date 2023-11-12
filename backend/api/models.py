@@ -46,3 +46,11 @@ class Treballador(models.Model):
 
 class Admin(models.Model):
     usuari = models.OneToOneField(Usuari, primary_key=True, on_delete=models.CASCADE, verbose_name=_('Usuari'))
+
+
+class Compra(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
+    data = models.DateTimeField(auto_now_add=True, verbose_name=_('Data compra'))
+    importFinal = models.FloatField(null=False, blank=False, verbose_name=_('Import final'))
+    client = models.ForeignKey(Client, related_name='compres', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Client'))
+    treballador = models.ForeignKey(Treballador, related_name='compres', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Treballador'))
