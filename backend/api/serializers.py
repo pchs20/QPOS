@@ -229,3 +229,16 @@ class SignUpTreballadorSerializer(SignUpUsuariChildrenSerializer):
         Treballador.objects.create(usuari=usuari)
         data['usuari'] = usuari
         return data
+
+
+class SignUpAdminSerializer(SignUpUsuariChildrenSerializer):
+    class Meta:
+        model = Admin
+        fields = ('email', 'username', 'password', 'password2', 'dni', 'dataNaixement',
+                  'telefon', 'token', 'created', 'nom', 'cognoms')
+
+    def create(self, data):
+        usuari, data = creacioUsuari(data)
+        Admin.objects.create(usuari=usuari)
+        data['usuari'] = usuari
+        return data

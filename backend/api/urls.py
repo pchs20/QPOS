@@ -13,6 +13,7 @@ router.register(r'login/treballadors', views.LoginTreballadorView, 'log in treba
 router.register(r'login/admins', views.LoginAdminView, 'log in admins')
 router.register(r'signup/clients', views.SignUpClientView, 'sign up clients')
 router.register(r'signup/treballadors', views.SignUpTreballadorView, 'sign up treballadors')
+router.register(r'signup/admins', views.SignUpAdminView, 'sign up admins')
 
 urlpatterns = [
     path('', include(router.urls)),
