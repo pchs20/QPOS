@@ -1,10 +1,10 @@
 from rest_framework import viewsets
 
 from . import permissions
-from .models import Proveidor, Producte, Client, Treballador, Admin, Compra
+from .models import Proveidor, Producte, Client, Treballador, Admin, Compra, Esdeveniment
 from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer, LoginClientSerializer, \
     LoginTreballadorSerializer, LoginAdminSerializer, SignUpClientSerializer, SignUpTreballadorSerializer, \
-    SignUpAdminSerializer, CompraSerializer
+    SignUpAdminSerializer, CompraSerializer, EsdevenimentSerializer
 
 
 class ProveidorsView(viewsets.ModelViewSet):
@@ -46,6 +46,14 @@ class CompresView(viewsets.ModelViewSet):
     queryset = Compra.objects.all()
     serializer_class = CompraSerializer
     models = Compra
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class EsdevenimentsView(viewsets.ModelViewSet):
+    queryset = Esdeveniment.objects.all()
+    serializer_class = EsdevenimentSerializer
+    models = Esdeveniment
+    permission_classes = [permissions.IsAuthenticated]
 
 
 # LOGIN I SIGNUP

@@ -9,6 +9,7 @@ router.register(r'clients', views.ClientsView, basename='clients')
 router.register(r'treballadors', views.TreballadorsView, basename='treballadors')
 router.register(r'admins', views.AdminsView, basename='admins')
 router.register(r'compres', views.CompresView, basename='compres')
+router.register(r'esdeveniments', views.EsdevenimentsView, basename='esdeveniments')
 
 router.register(r'login/clients', views.LoginClientView, 'log in clients')
 router.register(r'login/treballadors', views.LoginTreballadorView, 'log in treballadors')

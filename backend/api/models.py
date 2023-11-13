@@ -67,3 +67,16 @@ class LiniaCompra(models.Model):
 
     class Meta:
         verbose_name_plural = _('Línies Compra')
+
+
+class Esdeveniment(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
+    nom = models.CharField(max_length=100, null=False, blank=False, verbose_name=_('Nom'))
+    descripcio = models.CharField(max_length=1000, null=True, blank=True, verbose_name=_('Descripció'))
+    dataCreacio = models.DateTimeField(auto_now_add=True, verbose_name=_('Data creació'))
+    data = models.DateTimeField(null=True, blank=True, verbose_name=_('Data'))
+    aforament = models.IntegerField(default=0, null=True, blank=True, verbose_name=_('Aforament'))
+    durada = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Durada'))
+    ubicacio = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Ubicació'))
+    creador = models.ForeignKey(Admin, related_name='esdeveniments', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Creador'))
+    participants = models.ManyToManyField(Client, related_name='esdeveniments',  verbose_name=_('Participants'))
