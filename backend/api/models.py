@@ -79,4 +79,15 @@ class Esdeveniment(models.Model):
     durada = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Durada'))
     ubicacio = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Ubicació'))
     creador = models.ForeignKey(Admin, related_name='esdeveniments', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Creador'))
-    participants = models.ManyToManyField(Client, related_name='esdeveniments',  verbose_name=_('Participants'))
+
+
+class AssistenciaAEsdeveniment(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
+    client = models.ForeignKey(Client, related_name='assistencies', null=False, blank=False, on_delete=models.CASCADE, verbose_name=_('Client'))
+    esdeveniment = models.ForeignKey(Esdeveniment, related_name='assistencies', null=False, blank=False, on_delete=models.CASCADE, verbose_name=_('Esdeveniment'))
+    dataRegistre = models.DateTimeField(auto_now_add=True, verbose_name=_('Data registre'))
+
+    # Afegim una constraint per tal que no es pugui repetir
+    # la combinació d'un perfil i un esdeveniment determinats.
+    class Meta:
+        unique_together = ('client', 'esdeveniment')

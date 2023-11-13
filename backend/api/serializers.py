@@ -5,7 +5,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 
-from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari, Compra, LiniaCompra, Esdeveniment
+from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari, Compra, LiniaCompra, Esdeveniment, \
+    AssistenciaAEsdeveniment
 
 
 class ProveidorSerializer(serializers.ModelSerializer):
@@ -104,6 +105,14 @@ class CompraSerializer(serializers.ModelSerializer):
         fields = ('id', 'data', 'client', 'client_id', 'treballador', 'treballador_id', 'liniesCompra', 'linies', 'importFinal')
 
 
+class AssistenciaAEsdevenimentClientSerializer(serializers.ModelSerializer):
+    client = UsuariChildrenSerializer(read_only=True)
+
+    class Meta:
+        model = AssistenciaAEsdeveniment
+        fields = ('client',)
+
+
 class EsdevenimentSerializer(serializers.ModelSerializer):
     creador = UsuariChildrenSerializer(read_only=True)
     creador_id = serializers.PrimaryKeyRelatedField(
@@ -113,10 +122,16 @@ class EsdevenimentSerializer(serializers.ModelSerializer):
         required=True,
         source='creador'
     )
-    participants = UsuariChildrenSerializer(read_only=True, many=True)
+    assistencies = AssistenciaAEsdevenimentClientSerializer(read_only=True, many=True)
 
     class Meta:
         model = Esdeveniment
+        fields = ('id', 'nom', 'descripcio', 'dataCreacio', 'data', 'aforament', 'durada', 'ubicacio', 'creador', 'creador_id', 'assistencies')
+
+
+class AssistenciaAEsdevenimentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AssistenciaAEsdeveniment
         fields = '__all__'
 
 
