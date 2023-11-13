@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
+from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 
 from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari, Compra, LiniaCompra
@@ -79,10 +80,28 @@ class CompraSerializer(serializers.ModelSerializer):
         required=True,
         source='treballador'
     )
+    linies = serializers.ListField(write_only=True, required=True)
+    importFinal = serializers.FloatField(read_only=True)
+
+    def create(self, validated_data):
+        linies_data = validated_data.pop("linies", None)
+        validated_data['importFinal'] = 0.0
+        compra = super().create(validated_data)
+
+        total = 0.0
+        if linies_data:
+            for linia in linies_data:
+                quantitat = linia['quantitat']
+                producte = get_object_or_404(Producte, id=linia['producte'])
+                LiniaCompra.objects.create(quantitat=quantitat, producte=producte, compra=compra)
+                total += quantitat*producte.preu
+        compra.importFinal = total
+
+        return compra
 
     class Meta:
         model = Compra
-        fields = ('id', 'data', 'importFinal', 'client', 'client_id', 'treballador', 'treballador_id', 'liniesCompra')
+        fields = ('id', 'data', 'client', 'client_id', 'treballador', 'treballador_id', 'liniesCompra', 'linies', 'importFinal')
 
 
 # LOGIN
