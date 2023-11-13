@@ -46,3 +46,24 @@ class Treballador(models.Model):
 
 class Admin(models.Model):
     usuari = models.OneToOneField(Usuari, primary_key=True, on_delete=models.CASCADE, verbose_name=_('Usuari'))
+
+
+class Compra(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
+    data = models.DateTimeField(auto_now_add=True, verbose_name=_('Data compra'))
+    importFinal = models.FloatField(null=False, blank=False, verbose_name=_('Import final'))
+    client = models.ForeignKey(Client, related_name='compres', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Client'))
+    treballador = models.ForeignKey(Treballador, related_name='compres', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Treballador'))
+
+    class Meta:
+        verbose_name_plural = _('Compres')
+
+
+class LiniaCompra(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
+    quantitat = models.IntegerField(default=1, null=False, blank=False, verbose_name=_('Quantitat'))
+    producte = models.ForeignKey(Producte, related_name='liniesCompra', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Producte'))
+    compra = models.ForeignKey(Compra, related_name='liniesCompra', null=False, on_delete=models.CASCADE, verbose_name=_('Compra'))
+
+    class Meta:
+        verbose_name_plural = _('Línies Compra')
