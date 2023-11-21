@@ -1,6 +1,8 @@
 from rest_framework import viewsets
+from rest_framework import permissions as permissions_drf
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 
 from . import permissions
@@ -29,6 +31,38 @@ class ClientsView(viewsets.ModelViewSet):
     serializer_class = UsuariChildrenSerializer
     models = Client
     permission_classes = [permissions.IsAuthenticated]
+
+    def check_object_permissions(self, request, obj):
+        if request.method not in permissions_drf.SAFE_METHODS and request.user.usuari.client != obj:
+            raise PermissionDenied("No tens permís per executar aquesta acció.")
+
+    def update(self, request, *args, **kwargs):
+        print(kwargs)
+        print(request.data.get('username', None))
+
+        client = self.get_object()
+
+        username = request.data.get('username', None)
+        if username: client.usuari.user.username = username
+        nom = request.data.get('nom', None)
+        if nom: client.usuari.user.first_name = nom
+        cognoms = request.data.get('cognoms', None)
+        if cognoms: client.usuari.user.last_name = cognoms
+        email = request.data.get('email', None)
+        if email: client.usuari.user.email = email
+        dni = request.data.get('dni', None)
+        if dni: client.usuari.dni = dni
+        bio = request.data.get('bio', None)
+        if bio: client.usuari.bio = bio
+        dataNaixement = request.data.get('dataNaixement', None)
+        if dataNaixement: client.usuari.dataNaixement = dataNaixement
+        telefon = request.data.get('telefon', None)
+        if telefon: client.usuari.telefon = telefon
+
+        client.save()
+
+        serializer = self.get_serializer(client)
+        return Response(serializer.data)
 
 
 class TreballadorsView(viewsets.ModelViewSet):

@@ -31,8 +31,9 @@ class ProducteSerializer(serializers.ModelSerializer):
 
 
 class UsuariChildrenSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source="usuari.user.id", read_only=True)
     user = serializers.CharField(source="usuari.user")
-    username = serializers.CharField(source="usuari.user.username", read_only=True)
+    username = serializers.CharField(source="usuari.user.username")
     nom = serializers.CharField(source="usuari.user.first_name", required=False)
     cognoms = serializers.CharField(source="usuari.user.last_name", required=False)
     email = serializers.CharField(source="usuari.user.email", required=False)
@@ -45,7 +46,7 @@ class UsuariChildrenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ('user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge')
+        fields = ('id', 'user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge')
 
 
 class LiniaCompraSerializer(serializers.ModelSerializer):
