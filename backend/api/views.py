@@ -1,8 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework import permissions as permissions_drf
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 
 from . import permissions
@@ -31,6 +32,16 @@ class ClientsView(viewsets.ModelViewSet):
     serializer_class = UsuariChildrenSerializer
     models = Client
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    filterset_fields = {
+        'usuari__user__id': ['exact', 'in'],
+        'usuari__user__first_name': ['exact', 'in', 'contains'],
+        'usuari__user__last_name': ['exact', 'in', 'contains'],
+        'usuari__dni': ['exact', 'in', 'contains'],
+    }
+    search_fields = ['usuari__user__first_name', 'usuari__user__last_name']
+    ordering_fields = ['usuari__user__id', 'usuari__dni']
 
     def check_object_permissions(self, request, obj):
         if request.method not in permissions_drf.SAFE_METHODS and request.user.usuari.client != obj:
