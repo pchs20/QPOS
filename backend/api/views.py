@@ -1,4 +1,4 @@
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, mixins
 from rest_framework import permissions as permissions_drf
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -123,37 +123,37 @@ class AssistenciaAEsdevenimentView(viewsets.ModelViewSet):
 
 
 # LOGIN I SIGNUP
-class LoginClientView(viewsets.ModelViewSet):
+class LoginClientView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = LoginClientSerializer
     models = Client
 
 
-class LoginTreballadorView(viewsets.ModelViewSet):
+class LoginTreballadorView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Treballador.objects.all()
     serializer_class = LoginTreballadorSerializer
     models = Treballador
 
 
-class LoginAdminView(viewsets.ModelViewSet):
+class LoginAdminView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Admin.objects.all()
     serializer_class = LoginAdminSerializer
     models = Admin
 
 
-class SignUpClientView(viewsets.ModelViewSet):
+class SignUpClientView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = SignUpClientSerializer
     models = Client
 
 
-class SignUpTreballadorView(viewsets.ModelViewSet):
+class SignUpTreballadorView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Treballador.objects.all()
     serializer_class = SignUpTreballadorSerializer
     models = Treballador
 
 
-class SignUpAdminView(viewsets.ModelViewSet):
+class SignUpAdminView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Admin.objects.all()
     serializer_class = SignUpAdminSerializer
     models = Admin
