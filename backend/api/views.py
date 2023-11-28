@@ -25,6 +25,16 @@ class ProductesView(viewsets.ModelViewSet):
     serializer_class = ProducteSerializer
     models = Producte
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    filterset_fields = {
+        'id': ['exact', 'in'],
+        'nom': ['exact', 'in', 'contains'],
+        'preu': ['exact', 'in', 'range'],
+        'proveidor': ['exact', 'in'],
+    }
+    search_fields = ['nom', 'descripcio']
+    ordering_fields = ['id', 'nom', 'preu', 'estoc']
 
 
 class ClientsView(viewsets.ModelViewSet):
