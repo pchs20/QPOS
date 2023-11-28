@@ -164,10 +164,11 @@ class LoginUsuariChildrenSerializer(UsuariChildrenSerializer):
     username = serializers.CharField()
     password = serializers.CharField(max_length=128, write_only=True, required=True)
     token = serializers.CharField(required=False, read_only=True)
+    id = serializers.IntegerField(required=False, read_only=True, source='user.id')
 
     class Meta:
         model = Client
-        fields = ('username', 'password', 'token')
+        fields = ('username', 'password', 'token', 'id')
 
     def create(self, data):
         user = self.context['user']
