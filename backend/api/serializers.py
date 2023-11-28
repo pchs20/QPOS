@@ -49,6 +49,12 @@ class UsuariChildrenSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge')
 
 
+class ClientSerializer(UsuariChildrenSerializer):
+    class Meta:
+        model = Client
+        fields = ('id', 'user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge', 'punts')
+
+
 class LiniaCompraSerializer(serializers.ModelSerializer):
     producte = ProducteSerializer(read_only=True)
     producte_id = serializers.PrimaryKeyRelatedField(
@@ -84,6 +90,7 @@ class CompraSerializer(serializers.ModelSerializer):
     )
     linies = serializers.ListField(write_only=True, required=True)
     importFinal = serializers.FloatField(read_only=True)
+    data = serializers.DateTimeField(read_only=True, format="%d/%m/%y %H:%M:%S")
 
     def create(self, validated_data):
         linies_data = validated_data.pop("linies", None)
@@ -98,6 +105,7 @@ class CompraSerializer(serializers.ModelSerializer):
                 LiniaCompra.objects.create(quantitat=quantitat, producte=producte, compra=compra)
                 total += quantitat*producte.preu
         compra.importFinal = total
+        compra.save()
 
         return compra
 
@@ -124,6 +132,7 @@ class EsdevenimentSerializer(serializers.ModelSerializer):
         source='creador'
     )
     assistencies = AssistenciaAEsdevenimentClientSerializer(read_only=True, many=True)
+    dataCreacio = serializers.DateTimeField(read_only=True, format="%d/%m/%y %H:%M:%S")
 
     class Meta:
         model = Esdeveniment
@@ -131,6 +140,8 @@ class EsdevenimentSerializer(serializers.ModelSerializer):
 
 
 class AssistenciaAEsdevenimentSerializer(serializers.ModelSerializer):
+    dataRegistre = serializers.DateTimeField(read_only=True, format="%d/%m/%y %H:%M:%S")
+
     class Meta:
         model = AssistenciaAEsdeveniment
         fields = '__all__'
@@ -164,10 +175,11 @@ class LoginUsuariChildrenSerializer(UsuariChildrenSerializer):
     username = serializers.CharField()
     password = serializers.CharField(max_length=128, write_only=True, required=True)
     token = serializers.CharField(required=False, read_only=True)
+    id = serializers.IntegerField(required=False, read_only=True, source='user.id')
 
     class Meta:
         model = Client
-        fields = ('username', 'password', 'token')
+        fields = ('username', 'password', 'token', 'id')
 
     def create(self, data):
         user = self.context['user']

@@ -1,4 +1,4 @@
-from rest_framework import viewsets, filters, mixins
+from rest_framework import viewsets, filters, mixins, status
 from rest_framework import permissions as permissions_drf
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -10,7 +10,8 @@ from . import permissions
 from .models import Proveidor, Producte, Client, Treballador, Admin, Compra, Esdeveniment, AssistenciaAEsdeveniment
 from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer, LoginClientSerializer, \
     LoginTreballadorSerializer, LoginAdminSerializer, SignUpClientSerializer, SignUpTreballadorSerializer, \
-    SignUpAdminSerializer, CompraSerializer, EsdevenimentSerializer, AssistenciaAEsdevenimentSerializer
+    SignUpAdminSerializer, CompraSerializer, EsdevenimentSerializer, AssistenciaAEsdevenimentSerializer, \
+    ClientSerializer
 
 
 class ProveidorsView(viewsets.ModelViewSet):
@@ -25,11 +26,21 @@ class ProductesView(viewsets.ModelViewSet):
     serializer_class = ProducteSerializer
     models = Producte
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    filterset_fields = {
+        'id': ['exact', 'in'],
+        'nom': ['exact', 'in', 'contains'],
+        'preu': ['exact', 'in', 'range'],
+        'proveidor': ['exact', 'in'],
+    }
+    search_fields = ['nom', 'descripcio']
+    ordering_fields = ['id', 'nom', 'preu', 'estoc']
 
 
 class ClientsView(viewsets.ModelViewSet):
     queryset = Client.objects.all()
-    serializer_class = UsuariChildrenSerializer
+    serializer_class = ClientSerializer
     models = Client
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -75,6 +86,21 @@ class ClientsView(viewsets.ModelViewSet):
         serializer = self.get_serializer(client)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['post'])
+    def punts(self, request):
+        data = request.data
+        if "client" not in data or "punts" not in data:
+            return Response("Cal donar els camps client i punts", status=status.HTTP_400_BAD_REQUEST)
+
+        client = get_object_or_404(Client, usuari__user__id=data["client"])
+        difPunts = data["punts"]
+
+        client.punts += difPunts
+        client.save()
+
+        serializer = self.get_serializer(client)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class TreballadorsView(viewsets.ModelViewSet):
     queryset = Treballador.objects.all()
@@ -115,11 +141,14 @@ class AssistenciaAEsdevenimentView(viewsets.ModelViewSet):
     def delete(self, request):
         client = request.GET.get('client', None)
         esdeveniment = request.GET.get('esdeveniment', None)
-        if(not (client is None or esdeveniment is None)):
+        if (not (client is None or esdeveniment is None)):
             interes = get_object_or_404(self.queryset, client=client, esdeveniment=esdeveniment)
             interes.delete()
-            return Response(status=200, data={'message': f'S\'ha eliminat de forma correcta l\'assistència del client {client} a l\'esdeveniment amb codi {esdeveniment}'})
-        return Response(status=500, data={'error': 'La Request ha de tenir dos paràmetres: client (id del client) i esdeveniment (codi de l\'esdeveniment)', 'client indicat': client, 'esdeveniment indicat': esdeveniment})
+            return Response(status=200, data={
+                'message': f'S\'ha eliminat de forma correcta l\'assistència del client {client} a l\'esdeveniment amb codi {esdeveniment}'})
+        return Response(status=500, data={
+            'error': 'La Request ha de tenir dos paràmetres: client (id del client) i esdeveniment (codi de l\'esdeveniment)',
+            'client indicat': client, 'esdeveniment indicat': esdeveniment})
 
 
 # LOGIN I SIGNUP
