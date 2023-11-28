@@ -31,7 +31,7 @@ class Usuari(models.Model):
     # La resta de camps els definim aquí
     dni = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('DNI'))
     bio = models.CharField(max_length=250, null=True, blank=True, verbose_name=_('Bio'))
-    dataNaixement = models.DateField(null=True, blank=True, verbose_name=_('Data naixement'))
+    dataNaixement = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('Data naixement'))
     telefon = models.IntegerField(null=True, blank=True, verbose_name=_('Telefon'))
     imatge = models.ImageField(null=True, blank=True, verbose_name=_('Imatge'))
 
@@ -74,7 +74,7 @@ class Esdeveniment(models.Model):
     nom = models.CharField(max_length=100, null=False, blank=False, verbose_name=_('Nom'))
     descripcio = models.CharField(max_length=1000, null=True, blank=True, verbose_name=_('Descripció'))
     dataCreacio = models.DateTimeField(auto_now_add=True, verbose_name=_('Data creació'))
-    data = models.DateTimeField(null=True, blank=True, verbose_name=_('Data'))
+    data = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('Data'))
     aforament = models.IntegerField(default=0, null=True, blank=True, verbose_name=_('Aforament'))
     durada = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Durada'))
     ubicacio = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Ubicació'))

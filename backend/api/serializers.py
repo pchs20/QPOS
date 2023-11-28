@@ -84,6 +84,7 @@ class CompraSerializer(serializers.ModelSerializer):
     )
     linies = serializers.ListField(write_only=True, required=True)
     importFinal = serializers.FloatField(read_only=True)
+    data = serializers.DateTimeField(read_only=True, format="%d/%m/%y %H:%M:%S")
 
     def create(self, validated_data):
         linies_data = validated_data.pop("linies", None)
@@ -124,6 +125,7 @@ class EsdevenimentSerializer(serializers.ModelSerializer):
         source='creador'
     )
     assistencies = AssistenciaAEsdevenimentClientSerializer(read_only=True, many=True)
+    dataCreacio = serializers.DateTimeField(read_only=True, format="%d/%m/%y %H:%M:%S")
 
     class Meta:
         model = Esdeveniment
@@ -131,6 +133,8 @@ class EsdevenimentSerializer(serializers.ModelSerializer):
 
 
 class AssistenciaAEsdevenimentSerializer(serializers.ModelSerializer):
+    dataRegistre = serializers.DateTimeField(read_only=True, format="%d/%m/%y %H:%M:%S")
+
     class Meta:
         model = AssistenciaAEsdeveniment
         fields = '__all__'
