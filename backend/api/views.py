@@ -10,7 +10,7 @@ from . import permissions
 from .models import Proveidor, Producte, Client, Treballador, Admin, Compra, Esdeveniment, AssistenciaAEsdeveniment
 from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer, LoginClientSerializer, \
     LoginTreballadorSerializer, LoginAdminSerializer, SignUpClientSerializer, SignUpTreballadorSerializer, \
-    SignUpAdminSerializer, CompraSerializer, EsdevenimentSerializer, AssistenciaAEsdevenimentSerializer
+    SignUpAdminSerializer, CompraSerializer, EsdevenimentSerializer, AssistenciaAEsdevenimentSerializer, ClientSerializer
 
 
 class ProveidorsView(viewsets.ModelViewSet):
@@ -39,7 +39,7 @@ class ProductesView(viewsets.ModelViewSet):
 
 class ClientsView(viewsets.ModelViewSet):
     queryset = Client.objects.all()
-    serializer_class = UsuariChildrenSerializer
+    serializer_class = ClientSerializer
     models = Client
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]

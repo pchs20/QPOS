@@ -49,6 +49,12 @@ class UsuariChildrenSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge')
 
 
+class ClientSerializer(UsuariChildrenSerializer):
+    class Meta:
+        model = Client
+        fields = ('id', 'user', 'username', 'nom', 'cognoms', 'email', 'password', 'dni', 'bio', 'dataNaixement', 'telefon', 'imatge', 'punts')
+
+
 class LiniaCompraSerializer(serializers.ModelSerializer):
     producte = ProducteSerializer(read_only=True)
     producte_id = serializers.PrimaryKeyRelatedField(
@@ -99,6 +105,7 @@ class CompraSerializer(serializers.ModelSerializer):
                 LiniaCompra.objects.create(quantitat=quantitat, producte=producte, compra=compra)
                 total += quantitat*producte.preu
         compra.importFinal = total
+        compra.save()
 
         return compra
 

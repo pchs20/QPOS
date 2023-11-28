@@ -38,6 +38,7 @@ class Usuari(models.Model):
 
 class Client(models.Model):
     usuari = models.OneToOneField(Usuari, primary_key=True, on_delete=models.CASCADE, verbose_name=_('Usuari'))
+    punts = models.IntegerField(null=False, blank=False, default=0, verbose_name=_('Punts client'))
 
 
 class Treballador(models.Model):
