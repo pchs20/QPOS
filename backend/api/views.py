@@ -59,9 +59,6 @@ class ClientsView(viewsets.ModelViewSet):
             raise PermissionDenied("No tens permís per executar aquesta acció.")
 
     def update(self, request, *args, **kwargs):
-        print(kwargs)
-        print(request.data.get('username', None))
-
         client = self.get_object()
 
         username = request.data.get('username', None)
@@ -81,6 +78,8 @@ class ClientsView(viewsets.ModelViewSet):
         telefon = request.data.get('telefon', None)
         if telefon: client.usuari.telefon = telefon
 
+        client.usuari.user.save()
+        client.usuari.save()
         client.save()
 
         serializer = self.get_serializer(client)
