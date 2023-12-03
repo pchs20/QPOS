@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 
 from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari, Compra, LiniaCompra, Esdeveniment, \
-    AssistenciaAEsdeveniment
+    AssistenciaAEsdeveniment, Cupo, CuponsClients
 
 
 class ProveidorSerializer(serializers.ModelSerializer):
@@ -145,6 +145,12 @@ class AssistenciaAEsdevenimentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssistenciaAEsdeveniment
+        fields = '__all__'
+
+
+class CupoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cupo
         fields = '__all__'
 
 

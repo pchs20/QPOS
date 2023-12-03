@@ -7,11 +7,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 
 from . import permissions
-from .models import Proveidor, Producte, Client, Treballador, Admin, Compra, Esdeveniment, AssistenciaAEsdeveniment
+from .models import Proveidor, Producte, Client, Treballador, Admin, Compra, Esdeveniment, AssistenciaAEsdeveniment, \
+    Cupo, CuponsClients
 from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer, LoginClientSerializer, \
     LoginTreballadorSerializer, LoginAdminSerializer, SignUpClientSerializer, SignUpTreballadorSerializer, \
     SignUpAdminSerializer, CompraSerializer, EsdevenimentSerializer, AssistenciaAEsdevenimentSerializer, \
-    ClientSerializer
+    ClientSerializer, CupoSerializer
 
 
 class ProveidorsView(viewsets.ModelViewSet):
@@ -148,6 +149,13 @@ class AssistenciaAEsdevenimentView(viewsets.ModelViewSet):
         return Response(status=500, data={
             'error': 'La Request ha de tenir dos paràmetres: client (id del client) i esdeveniment (codi de l\'esdeveniment)',
             'client indicat': client, 'esdeveniment indicat': esdeveniment})
+
+
+class CuponsView(viewsets.ModelViewSet):
+    queryset = Cupo.objects.all()
+    serializer_class = CupoSerializer
+    models = Cupo
+    permissions = [permissions.IsAuthenticated]
 
 
 # LOGIN I SIGNUP

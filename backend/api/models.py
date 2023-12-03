@@ -99,7 +99,29 @@ class AssistenciaAEsdeveniment(models.Model):
     esdeveniment = models.ForeignKey(Esdeveniment, related_name='assistencies', null=False, blank=False, on_delete=models.CASCADE, verbose_name=_('Esdeveniment'))
     dataRegistre = models.DateTimeField(auto_now_add=True, verbose_name=_('Data registre'))
 
-    # Afegim una constraint per tal que no es pugui repetir
-    # la combinació d'un perfil i un esdeveniment determinats.
+    # Afegim una constraint per tal que no es pugui repetir la combinació d'un client i un esdeveniment determinats.
     class Meta:
         unique_together = ('client', 'esdeveniment')
+
+
+class Cupo(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
+    nom = models.CharField(max_length=100, null=False, blank=False, verbose_name=_('Nom'))
+    descripcio = models.CharField(max_length=100, null=False, blank=False, verbose_name=_('Descripció'))
+    descompte = models.FloatField(null=True, blank=True, verbose_name=_('Descompte'))
+    dataInici = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('Data inici'))
+    dataFinal = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('Data final'))
+
+    class Meta:
+        verbose_name_plural = _('Cupons')
+
+
+class CuponsClients(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
+    client = models.ForeignKey(Client, related_name='cupons', null=False, blank=False, on_delete=models.CASCADE, verbose_name=_('Client'))
+    cupo = models.ForeignKey(Cupo, related_name='clients', null=False, blank=False, on_delete=models.CASCADE, verbose_name=_('Cupó'))
+    quantitat = models.IntegerField(default=1, null=False, blank=False, verbose_name=_('Quantitat'))
+
+    # Afegim una constraint per tal que no es pugui repetir la combinació d'un client i un cupó determinats.
+    class Meta:
+        unique_together = ('client', 'cupo')
