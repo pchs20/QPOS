@@ -50,11 +50,22 @@ class Admin(models.Model):
 
 
 class Compra(models.Model):
+    Targeta = 'Targeta'
+    Efectiu = 'Efectiu'
+    TPagament = (
+        (Targeta, _('Targeta')),
+        (Efectiu, _('Efectiu'))
+    )
+
     id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
     data = models.DateTimeField(auto_now_add=True, verbose_name=_('Data compra'))
     importFinal = models.FloatField(null=False, blank=False, verbose_name=_('Import final'))
     client = models.ForeignKey(Client, related_name='compres', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Client'))
     treballador = models.ForeignKey(Treballador, related_name='compres', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Treballador'))
+    metodePagament = models.CharField(choices=TPagament, null=True, blank=True, max_length=8, verbose_name=_('Mètode pagament'))
+    dinersEntregats = models.FloatField(null=True, blank=True, verbose_name=_('Diners entregats'))
+    dinersCanvi = models.FloatField(null=True, blank=True, verbose_name=_('Diners canvi'))
+    descompte = models.FloatField(null=True, blank=True, verbose_name=_('Descompte'))
 
     class Meta:
         verbose_name_plural = _('Compres')

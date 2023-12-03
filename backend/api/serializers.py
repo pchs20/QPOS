@@ -104,14 +104,15 @@ class CompraSerializer(serializers.ModelSerializer):
                 producte = get_object_or_404(Producte, id=linia['producte'])
                 LiniaCompra.objects.create(quantitat=quantitat, producte=producte, compra=compra)
                 total += quantitat*producte.preu
-        compra.importFinal = total
+        compra.importFinal = round(total, 2)
         compra.save()
 
         return compra
 
     class Meta:
         model = Compra
-        fields = ('id', 'data', 'client', 'client_id', 'treballador', 'treballador_id', 'liniesCompra', 'linies', 'importFinal')
+        fields = ('id', 'data', 'client', 'client_id', 'treballador', 'treballador_id', 'liniesCompra', 'linies',
+                  'importFinal', 'metodePagament', 'dinersEntregats', 'dinersCanvi', 'descompte')
 
 
 class AssistenciaAEsdevenimentClientSerializer(serializers.ModelSerializer):
