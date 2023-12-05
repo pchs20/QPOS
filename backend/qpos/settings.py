@@ -93,10 +93,7 @@ WSGI_APPLICATION = 'qpos.wsgi.application'
     }"""
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse('postgres://pduran:HN4xODZZmSQHbGYUnnyjs3TNdivN7JBV@dpg-cldilnug1b2c73f7ua1g-a.frankfurt-postgres.render.com/qposdb')
 }
 
 
