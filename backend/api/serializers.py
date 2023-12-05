@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 
 from .models import Proveidor, Producte, Client, Treballador, Admin, Usuari, Compra, LiniaCompra, Esdeveniment, \
-    AssistenciaAEsdeveniment
+    AssistenciaAEsdeveniment, Cupo, CuponsClients
 
 
 class ProveidorSerializer(serializers.ModelSerializer):
@@ -104,14 +104,15 @@ class CompraSerializer(serializers.ModelSerializer):
                 producte = get_object_or_404(Producte, id=linia['producte'])
                 LiniaCompra.objects.create(quantitat=quantitat, producte=producte, compra=compra)
                 total += quantitat*producte.preu
-        compra.importFinal = total
+        compra.importFinal = round(total, 2)
         compra.save()
 
         return compra
 
     class Meta:
         model = Compra
-        fields = ('id', 'data', 'client', 'client_id', 'treballador', 'treballador_id', 'liniesCompra', 'linies', 'importFinal')
+        fields = ('id', 'data', 'client', 'client_id', 'treballador', 'treballador_id', 'liniesCompra', 'linies',
+                  'importFinal', 'metodePagament', 'dinersEntregats', 'dinersCanvi', 'descompte')
 
 
 class AssistenciaAEsdevenimentClientSerializer(serializers.ModelSerializer):
@@ -144,6 +145,12 @@ class AssistenciaAEsdevenimentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssistenciaAEsdeveniment
+        fields = '__all__'
+
+
+class CupoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cupo
         fields = '__all__'
 
 
