@@ -111,12 +111,36 @@ class TreballadorsView(viewsets.ModelViewSet):
     models = Treballador
     permission_classes = [permissions.IsTreballador | permissions.IsAdmin]
 
+    def check_object_permissions(self, request, obj):
+        if request.method not in permissions_drf.SAFE_METHODS and request.user.usuari.treballador != obj:
+            raise PermissionDenied("No tens permís per executar aquesta acció.")
+
+    def update(self, request, *args, **kwargs):
+        treballador = self.get_object()
+
+        updateUsuariChildren(treballador, request.data)
+
+        serializer = self.get_serializer(treballador)
+        return Response(serializer.data)
+
 
 class AdminsView(viewsets.ModelViewSet):
     queryset = Admin.objects.all()
     serializer_class = UsuariChildrenSerializer
     models = Admin
     permission_classes = [permissions.IsAdmin]
+
+    def check_object_permissions(self, request, obj):
+        if request.method not in permissions_drf.SAFE_METHODS and request.user.usuari.administrador != obj:
+            raise PermissionDenied("No tens permís per executar aquesta acció.")
+
+    def update(self, request, *args, **kwargs):
+        admin = self.get_object()
+
+        updateUsuariChildren(admin, request.data)
+
+        serializer = self.get_serializer(admin)
+        return Response(serializer.data)
 
 
 class CompresView(viewsets.ModelViewSet):
