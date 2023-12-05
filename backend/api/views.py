@@ -38,6 +38,29 @@ class ProductesView(viewsets.ModelViewSet):
     ordering_fields = ['id', 'nom', 'preu', 'estoc']
 
 
+def updateUsuariChildren(object, data):
+    username = data.get('username', None)
+    if username: object.usuari.user.username = username
+    nom = data.get('nom', None)
+    if nom: object.usuari.user.first_name = nom
+    cognoms = data.get('cognoms', None)
+    if cognoms: object.usuari.user.last_name = cognoms
+    email = data.get('email', None)
+    if email: object.usuari.user.email = email
+    dni = data.get('dni', None)
+    if dni: object.usuari.dni = dni
+    bio = data.get('bio', None)
+    if bio: object.usuari.bio = bio
+    dataNaixement = data.get('dataNaixement', None)
+    if dataNaixement: object.usuari.dataNaixement = dataNaixement
+    telefon = data.get('telefon', None)
+    if telefon: object.usuari.telefon = telefon
+
+    object.usuari.user.save()
+    object.usuari.save()
+    object.save()
+
+
 class ClientsView(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
@@ -61,26 +84,7 @@ class ClientsView(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         client = self.get_object()
 
-        username = request.data.get('username', None)
-        if username: client.usuari.user.username = username
-        nom = request.data.get('nom', None)
-        if nom: client.usuari.user.first_name = nom
-        cognoms = request.data.get('cognoms', None)
-        if cognoms: client.usuari.user.last_name = cognoms
-        email = request.data.get('email', None)
-        if email: client.usuari.user.email = email
-        dni = request.data.get('dni', None)
-        if dni: client.usuari.dni = dni
-        bio = request.data.get('bio', None)
-        if bio: client.usuari.bio = bio
-        dataNaixement = request.data.get('dataNaixement', None)
-        if dataNaixement: client.usuari.dataNaixement = dataNaixement
-        telefon = request.data.get('telefon', None)
-        if telefon: client.usuari.telefon = telefon
-
-        client.usuari.user.save()
-        client.usuari.save()
-        client.save()
+        updateUsuariChildren(client, request.data)
 
         serializer = self.get_serializer(client)
         return Response(serializer.data)
