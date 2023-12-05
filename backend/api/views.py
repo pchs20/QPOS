@@ -184,6 +184,14 @@ class CuponsView(viewsets.ModelViewSet):
     serializer_class = CupoSerializer
     models = Cupo
     permissions = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    filterset_fields = {
+        'id': ['exact', 'in'],
+        'nom': ['exact', 'in', 'contains'],
+        'punts': ['exact', 'in', 'range'],
+    }
+    ordering_fields = ['id', 'nom', 'descompte', 'punts']
 
 
 # LOGIN I SIGNUP

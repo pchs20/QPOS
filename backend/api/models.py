@@ -108,6 +108,7 @@ class Cupo(models.Model):
     id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
     nom = models.CharField(max_length=100, null=False, blank=False, verbose_name=_('Nom'))
     descripcio = models.CharField(max_length=100, null=False, blank=False, verbose_name=_('Descripció'))
+    punts = models.IntegerField(default=1, null=False, blank=False, verbose_name=_('Punts necessaris'))
     descompte = models.FloatField(null=True, blank=True, verbose_name=_('Descompte'))
     dataInici = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('Data inici'))
     dataFinal = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('Data final'))
