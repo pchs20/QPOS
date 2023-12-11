@@ -7,8 +7,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 
 from . import permissions
+from .mixins import FilterBackend
 from .models import Proveidor, Producte, Client, Treballador, Admin, Compra, Esdeveniment, AssistenciaAEsdeveniment, \
-    Cupo, CuponsClients
+    Cupo
 from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer, LoginClientSerializer, \
     LoginTreballadorSerializer, LoginAdminSerializer, SignUpClientSerializer, SignUpTreballadorSerializer, \
     SignUpAdminSerializer, CompraSerializer, EsdevenimentSerializer, AssistenciaAEsdevenimentSerializer, \
@@ -149,6 +150,14 @@ class CompresView(viewsets.ModelViewSet):
     serializer_class = CompraSerializer
     models = Compra
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [FilterBackend, DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    filterset_fields = {
+        'metodePagament': ['exact', 'in'],
+        'treballador__usuari__user__id': ['exact', 'in'],
+        'client__usuari__user__id': ['exact', 'in'],
+    }
+    ordering_fields = ['metodePagament', 'data', 'treballador__usuari__user__id', 'client__usuari__user__id']
 
 
 class EsdevenimentsView(viewsets.ModelViewSet):
