@@ -165,6 +165,14 @@ class EsdevenimentsView(viewsets.ModelViewSet):
     serializer_class = EsdevenimentSerializer
     models = Esdeveniment
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    filterset_fields = {
+        'aforament': ['exact', 'in', 'range'],
+        'ubicacio': ['exact', 'in'],
+        'data': ['exact', 'in'],
+    }
+    ordering_fields = ['aforament', 'ubicacio', 'data']
 
 
 class AssistenciaAEsdevenimentView(viewsets.ModelViewSet):
