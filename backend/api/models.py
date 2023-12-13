@@ -60,8 +60,8 @@ class Compra(models.Model):
     id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
     data = models.DateTimeField(auto_now_add=True, verbose_name=_('Data compra'))
     importFinal = models.FloatField(null=False, blank=False, verbose_name=_('Import final'))
-    client = models.ForeignKey(Client, related_name='compres', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Client'))
-    treballador = models.ForeignKey(Treballador, related_name='compres', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Treballador'))
+    client = models.ForeignKey(Client, related_name='compres', null=False, on_delete=models.CASCADE, verbose_name=_('Client'))
+    treballador = models.ForeignKey(Treballador, related_name='compres', null=False, on_delete=models.CASCADE, verbose_name=_('Treballador'))
     metodePagament = models.CharField(choices=TPagament, null=True, blank=True, max_length=8, verbose_name=_('Mètode pagament'))
     dinersEntregats = models.FloatField(null=True, blank=True, verbose_name=_('Diners entregats'))
     dinersCanvi = models.FloatField(null=True, blank=True, verbose_name=_('Diners canvi'))
@@ -74,7 +74,7 @@ class Compra(models.Model):
 class LiniaCompra(models.Model):
     id = models.AutoField(primary_key=True, verbose_name=_('Identificador'))
     quantitat = models.IntegerField(default=1, null=False, blank=False, verbose_name=_('Quantitat'))
-    producte = models.ForeignKey(Producte, related_name='liniesCompra', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Producte'))
+    producte = models.ForeignKey(Producte, related_name='liniesCompra', null=False, on_delete=models.CASCADE, verbose_name=_('Producte'))
     compra = models.ForeignKey(Compra, related_name='liniesCompra', null=False, on_delete=models.CASCADE, verbose_name=_('Compra'))
 
     class Meta:
@@ -90,7 +90,7 @@ class Esdeveniment(models.Model):
     aforament = models.IntegerField(default=0, null=True, blank=True, verbose_name=_('Aforament'))
     durada = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Durada'))
     ubicacio = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Ubicació'))
-    creador = models.ForeignKey(Admin, related_name='esdeveniments', null=False, on_delete=models.DO_NOTHING, verbose_name=_('Creador'))
+    creador = models.ForeignKey(Admin, related_name='esdeveniments', null=False, on_delete=models.CASCADE, verbose_name=_('Creador'))
 
 
 class AssistenciaAEsdeveniment(models.Model):
