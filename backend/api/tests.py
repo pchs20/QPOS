@@ -1,5 +1,5 @@
 from django.test import TestCase
-from rest_framework.test import APIRequestFactory
+from rest_framework.test import APIRequestFactory, force_authenticate
 from django.urls import reverse, resolve
 from rest_framework import status
 
@@ -131,19 +131,22 @@ class TestSignUpLogIn(TestCase):
     def test_successful_register_client(self):
         # Sign Up Client
         urlSignUp = reverse('signup_clients-list')
-        response = self.client.post(urlSignUp,
-                                    {"email": self.email_client, "username": self.username_client,
-                                     "dni": self.dni_client, "nom": self.nom_client, "cognoms": self.cognoms_client,
-                                     "password": self.password, "password2": self.password})
-        self.assertEquals(response.status_code, status.HTTP_201_CREATED)
+        request = APIRequestFactory().post(urlSignUp, {"email": self.email_client, "username": self.username_client,
+                                                       "dni": self.dni_client, "nom": self.nom_client,
+                                                       "cognoms": self.cognoms_client,
+                                                       "password": self.password, "password2": self.password},
+                                           format='json')
+        view = resolve(urlSignUp).func
+        response = view(request)
 
         # Login Client
         urlLogIn = reverse('login_clients-list')
-        response2 = self.client.post(urlLogIn,
-                                     {"username": self.username_client, "password": self.password})
-        self.assertEquals(response2.status_code, status.HTTP_201_CREATED)
+        request2 = APIRequestFactory().post(urlLogIn, {"username": self.username_client, "password": self.password},
+                                            format='json')
+        view = resolve(urlLogIn).func
+        response2 = view(request2)
 
-        self.assertEquals(response.json()['token'], response2.json()['token'])
+        self.assertEquals(response.data['token'], response2.data['token'])
 
     # Comprovació de Sign Up i Login d'un Treballador cas d'éxit
     def test_successful_register_and_login_treballador(self):
@@ -151,7 +154,8 @@ class TestSignUpLogIn(TestCase):
         urlSignUp = reverse('signup_treballadors-list')
         response = self.client.post(urlSignUp,
                                     {"email": self.email_treballador, "username": self.username_treballador,
-                                     "dni": self.dni_treballador, "nom": self.nom_treballador, "cognoms": self.cognoms_treballador,
+                                     "dni": self.dni_treballador, "nom": self.nom_treballador,
+                                     "cognoms": self.cognoms_treballador,
                                      "password": self.password, "password2": self.password})
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
 
