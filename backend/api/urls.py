@@ -14,12 +14,12 @@ router.register(r'assistencies', views.AssistenciaAEsdevenimentView, basename='a
 router.register(r'cupons', views.CuponsView, basename='cupons')
 router.register(r'cuponsclientss', views.CuponsClientsView, basename='cupons_clients')
 
-router.register(r'login/clients', views.LoginClientView, 'log in clients')
-router.register(r'login/treballadors', views.LoginTreballadorView, 'log in treballadors')
-router.register(r'login/admins', views.LoginAdminView, 'log in admins')
-router.register(r'signup/clients', views.SignUpClientView, 'sign up clients')
-router.register(r'signup/treballadors', views.SignUpTreballadorView, 'sign up treballadors')
-router.register(r'signup/admins', views.SignUpAdminView, 'sign up admins')
+router.register(r'login/clients', views.LoginClientView, 'login_clients')
+router.register(r'login/treballadors', views.LoginTreballadorView, 'login_treballadors')
+router.register(r'login/admins', views.LoginAdminView, 'login_admins')
+router.register(r'signup/clients', views.SignUpClientView, 'signup_clients')
+router.register(r'signup/treballadors', views.SignUpTreballadorView, 'signup_treballadors')
+router.register(r'signup/admins', views.SignUpAdminView, 'signup_admins')
 
 urlpatterns = [
     path('', include(router.urls)),
