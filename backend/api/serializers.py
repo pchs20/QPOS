@@ -154,6 +154,12 @@ class CupoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CupoClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CuponsClients
+        fields = '__all__'
+
+
 # LOGIN
 def validacioLogin(data):
     username = data.get("username", None)
