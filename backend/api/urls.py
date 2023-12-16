@@ -12,6 +12,7 @@ router.register(r'compres', views.CompresView, basename='compres')
 router.register(r'esdeveniments', views.EsdevenimentsView, basename='esdeveniments')
 router.register(r'assistencies', views.AssistenciaAEsdevenimentView, basename='assistencies')
 router.register(r'cupons', views.CuponsView, basename='cupons')
+router.register(r'cuponsclientss', views.CuponsClientsView, basename='cupons_clients')
 
 router.register(r'login/clients', views.LoginClientView, 'log in clients')
 router.register(r'login/treballadors', views.LoginTreballadorView, 'log in treballadors')

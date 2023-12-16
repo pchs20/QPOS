@@ -9,11 +9,11 @@ from django.shortcuts import get_object_or_404
 from . import permissions
 from .mixins import FilterBackend
 from .models import Proveidor, Producte, Client, Treballador, Admin, Compra, Esdeveniment, AssistenciaAEsdeveniment, \
-    Cupo
+    Cupo, CuponsClients
 from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer, LoginClientSerializer, \
     LoginTreballadorSerializer, LoginAdminSerializer, SignUpClientSerializer, SignUpTreballadorSerializer, \
     SignUpAdminSerializer, CompraSerializer, EsdevenimentSerializer, AssistenciaAEsdevenimentSerializer, \
-    ClientSerializer, CupoSerializer
+    ClientSerializer, CupoSerializer, CupoClientSerializer
 
 
 class ProveidorsView(viewsets.ModelViewSet):
@@ -209,6 +209,13 @@ class CuponsView(viewsets.ModelViewSet):
         'punts': ['exact', 'in', 'range'],
     }
     ordering_fields = ['id', 'nom', 'descompte', 'punts']
+
+
+class CuponsClientsView(viewsets.ModelViewSet):
+    queryset = CuponsClients.objects.all()
+    serializer_class = CupoClientSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['client', 'cupo']
 
 
 # LOGIN I SIGNUP
