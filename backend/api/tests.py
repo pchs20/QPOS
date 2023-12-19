@@ -186,7 +186,7 @@ class TestSignUpLogIn(TestCase):
         self.assertEquals(response.json()['token'], response2.json()['token'])
 
 
-class TestMixins(TestCase):
+class TestMixinsFiltres(TestCase):
     def setUp(self) -> None:
         # Treballador
         self.userTreballador = User.objects.create(
@@ -212,6 +212,31 @@ class TestMixins(TestCase):
 
     def test_dataRange(self):
         urlCompres = reverse('compres-list') + '?data__range=06/07/23,07/07/23'
+        request = APIRequestFactory().get(urlCompres, format='json')
+        force_authenticate(request, self.userTreballador)
+        view = resolve(reverse('compres-list')).func
+        response = view(request)
+
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+
+
+class TestMixinsPaginacio(TestCase):
+    def setUp(self) -> None:
+        # Treballador
+        self.userTreballador = User.objects.create(
+            id=1,
+            username='usuariTreballador',
+            is_active=True
+        )
+        self.usuariTreballador = Usuari.objects.create(
+            user=self.userTreballador
+        )
+        self.treballador = Treballador.objects.create(
+            usuari=self.usuariTreballador
+        )
+
+    def test_limit(self):
+        urlCompres = reverse('compres-list') + '?limit=1'
         request = APIRequestFactory().get(urlCompres, format='json')
         force_authenticate(request, self.userTreballador)
         view = resolve(reverse('compres-list')).func

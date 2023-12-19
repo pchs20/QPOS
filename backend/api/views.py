@@ -7,7 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 
 from . import permissions
-from .mixins import FilterBackend
+from .mixins import FilterBackend, PaginationClass
 from .models import Proveidor, Producte, Client, Treballador, Admin, Compra, Esdeveniment, AssistenciaAEsdeveniment, \
     Cupo, CuponsClients
 from .serializers import ProveidorSerializer, ProducteSerializer, UsuariChildrenSerializer, LoginClientSerializer, \
@@ -29,6 +29,7 @@ class ProductesView(viewsets.ModelViewSet):
     models = Producte
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    pagination_class = PaginationClass
 
     filterset_fields = {
         'id': ['exact', 'in'],
@@ -151,6 +152,7 @@ class CompresView(viewsets.ModelViewSet):
     models = Compra
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [FilterBackend, DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    pagination_class = PaginationClass
 
     filterset_fields = {
         'metodePagament': ['exact', 'in'],
@@ -166,6 +168,7 @@ class EsdevenimentsView(viewsets.ModelViewSet):
     models = Esdeveniment
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    pagination_class = PaginationClass
 
     filterset_fields = {
         'aforament': ['exact', 'in', 'range'],
