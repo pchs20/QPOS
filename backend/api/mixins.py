@@ -1,4 +1,4 @@
-from rest_framework import filters
+from rest_framework import filters, pagination, response
 from datetime import datetime
 
 
@@ -16,3 +16,18 @@ class FilterBackend(filters.BaseFilterBackend):
 
             queryset = queryset.filter(data__date__range=(start_date, end_date))
         return queryset
+
+
+class PaginationClass(pagination.LimitOffsetPagination):
+    max_limit = 1000  # default max limit
+
+    def get_limit(self, request):
+        if 'limit' in request.query_params:
+            try:
+                return int(request.query_params['limit'])
+            except ValueError:
+                pass
+        return self.max_limit
+
+    def get_paginated_response(self, data):
+        return response.Response(data)
