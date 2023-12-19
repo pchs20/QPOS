@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.DAM_Projecte_QPOS" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <cupons name="colorPrimary">@color/my_dark_primary</cupons> -->
+    </style>
+</resources>
