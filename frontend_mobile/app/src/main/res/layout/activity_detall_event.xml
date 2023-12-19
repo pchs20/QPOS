@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    tools:context=".ui.events.detall.DetallEventActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/cardImageEvent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardDateEvent" />
+
+        <TextView
+            android:id="@+id/cardTitleEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:padding="8dp"
+            android:text="Titol Event"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardImageEvent" />
+
+        <TextView
+            android:id="@+id/cardDateEvent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="3dp"
+            android:padding="8dp"
+            android:text="25/12/2024"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cardUbicacioEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="24dp"
+            android:padding="8dp"
+            android:text="Ubicació"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardTitleEvent" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="29dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toStartOf="@+id/cardUbicacioEvent"
+            app:layout_constraintHorizontal_bias="0.684"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardTitleEvent"
+            app:srcCompat="@drawable/ic_location_event" />
+
+        <TextView
+            android:id="@+id/textDuracio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="40dp"
+            android:text="2H"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/textDescripcio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardTitleEvent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/iconTempsEvent"
+            android:layout_width="34dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="28dp"
+            android:src="@drawable/ic_timer_event"
+            app:layout_constraintEnd_toStartOf="@+id/textDuracio"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/cardUbicacioEvent"
+            app:layout_constraintTop_toBottomOf="@+id/cardTitleEvent" />
+
+        <Button
+            android:id="@+id/buttonApuntarse"
+            style="@android:style/Widget.Material.Button"
+            android:layout_width="209dp"
+            android:layout_height="71dp"
+            android:layout_marginBottom="28dp"
+            android:backgroundTint="@color/green"
+            android:onClick="ApuntarEvent"
+            android:text="Apuntar-me!"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/ButtonApuntarse"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:onClick="VeureAssistents"
+            android:text="Assistents"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            app:icon="@drawable/imagenusuario"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toTopOf="@+id/buttonApuntarse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.62"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textDescripcio"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:text="TextView"
+            android:textSize="20dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/ButtonApuntarse"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardUbicacioEvent"
+            app:layout_constraintVertical_bias="0.304" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="35dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_date_event" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

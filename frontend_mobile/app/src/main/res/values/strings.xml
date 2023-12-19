@@ -7,11 +7,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="spinner_options">
-        <item>Selecciona el Animal</item>
-        <item>Gat</item>
-        <item>Gos</item>
-        <item>Peix</item>
-        <item>Tortuga</item>
-        <item>Hamster</item>
+        <item>Forma de Pagament</item>
+        <item>Efectiu</item>
+        <item>Targeta</item>
     </string-array>
 </resources>

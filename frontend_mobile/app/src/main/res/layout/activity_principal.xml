@@ -29,11 +29,11 @@
         android:textSize="25dp"
         android:textStyle="bold" />
 
-    <fragment
+    <FrameLayout
         android:id="@+id/nav_host_fragment_activity_main"
         android:name="qpos.com.dam_projecte_qpos.ui.events.EventsFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:defaultNavHost="true"
         android:layout_below="@+id/nav_view"
         android:layout_above="@+id/bottomNavigation"
